@@ -6,6 +6,8 @@ for config_file in ~/.zsh/*.zsh; do
   source $config_file
 done
 
-# Load nvm
-source ~/.zsh/nvm
+# Load script files
+for script_file in ~/.zsh/scripts/*.sh; do
+  source $script_file
+done
 
