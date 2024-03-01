@@ -19,10 +19,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-z fzf history ripgrep z cp docker zsh-autosuggestions ssh-agent)
-
-# Load ssh identities (must be done before the source line and after the plugin load)
-zstyle :omz:plugins:ssh-agent identities id_beast
+plugins=(git zsh-z fzf history ripgrep z cp docker brew adb yarn react-native npm node zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
