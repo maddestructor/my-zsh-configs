@@ -1,8 +1,9 @@
 #! /bin/bash
 
 # custom variables
-export JIRA_PROJECT="PFM"
+export JIRA_PROJECT="PAPI"
 export GH_SLUG="maddestructor"
+export GITHUB_REVIEWER="MaintainX/enterprise-platform-api"
 
 ####################
 ## Usage
@@ -63,5 +64,5 @@ function quickPR() {
   git commit -m "[$jira] $title"
   git push
 
-  gh pr create --assignee @me --body " " --title "[$jira] $title" --web
+  gh pr create --assignee @me --body "" --reviewer $GITHUB_REVIEWER --title "[$jira] $title"
 }

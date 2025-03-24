@@ -1,4 +1,4 @@
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home/jre
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
@@ -7,6 +7,7 @@ export NVM_DIR="$HOME/.nvm"
 # Adding Android SDK to PATH
 export PATH=$PATH:/Users/mathieu/Library/Android/sdk/tools/bin
 export PATH=$PATH:/Users/mathieu/Library/Android/sdk/platform-tools
+export PATH=$PATH:/Users/mathieu/Library/Android/sdk/cmdline-tools/latest/bin
 
 # Adding Dev tools to PATH
 export PATH=$PATH:/opt/homebrew/bin/tsc
@@ -18,4 +19,4 @@ export PATH=$PATH:/Users/mathieu/.scripts
 source ~/.scripts/*
 
 # MX Environment variables
-export MX_SLUG=mb1
+export MX_SLUG=mb1mac

@@ -27,6 +27,7 @@ function bump-interactive(){
 
     # commit and push
     local pr_title="[$JIRA_PROJECT] Weekly update dependencies - $(date '+%b %d, %Y')"
+    yarn run changelog-add --description "$pr_title" --jira-issue "$jira"
     git add .
     git commit -m "$pr_title"
     git push
