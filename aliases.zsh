@@ -1,7 +1,6 @@
-alias awsp="source _awsp"
+# Navigation
 alias ..="cd .."
-alias edb="yarn & yarn ensureDb"
 alias lsd="ls -ld .*"
-alias sso="aws sso login"
-alias main="cd ~/Repositories/maintainx"
+
+# Development
 alias y="yarn"

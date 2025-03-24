@@ -28,41 +28,57 @@ function quickPR() {
     echo "Usage: quickPR <JIRA ticket> <title>"
     return 1
   fi
-  # TODO:: Ensure `yarn changelog-add` is available in the current path
+
+  # Check if we're in a Node.js project when trying to use changelog-add
+  if [ -f "package.json" ]; then
+    # Check if changelog-add command exists
+    if ! yarn run changelog-add --help >/dev/null 2>&1; then
+      echo "Warning: changelog-add command not available"
+    fi
+  fi
 
   # If jira ticket is only zeros then
   # call script "jira-cli" and parse output for "Issue created: <PROJECT>-<ISSUE_KEY>" to extract the Jira ticket
-  # Follow installation instructions at https://github.com/MaintainX/mx-jira/blob/186b0df4052779b5d1628bce99461da4c20d06d4/packages/jira-cli/README.md
   if [[ "$jira" =~ ^[0]+$ ]]; then
+    if ! command -v jira-cli >/dev/null 2>&1; then
+      echo "Error: jira-cli not found. Please install it first."
+      return 1
+    fi
     local out=
     out=$(jira-cli issue create --project "$JIRA_PROJECT" --summary "$title" --status "InProgress" --sprint "@active" --issueType Task)
     jira=$(echo "$out" | grep -oEI 'Issue created: (\w+-\w+)' | sed 's/Issue created: //g')
-  fi;
+  fi
   echo "JIRA: $jira"
 
   # make sure we can reach the npm private registry
-  mxt utils aws-check
-  # aws sso login # Alternative if you don't have mxt installed... but you should
+  if ! command -v mxt >/dev/null 2>&1; then
+    echo "Warning: mxt not found, skipping registry check"
+  else
+    mxt utils aws-check
+  fi
 
   # uppercase JIRA ticket
   jira=$(echo "$jira" | tr '[:lower:]' '[:upper:]')
-  # if jira start with a number, add a JIRA_PROJECT
+  # if jira starts with a number, add JIRA_PROJECT
   if [[ "$jira" =~ ^[0-9] ]]; then
     jira="$JIRA_PROJECT-$jira"
   fi
 
   local title_branch_name=
   # lowercase title and replace non-alphanumeric characters with a dash
-  title_branch_name=$(echo "$title" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g' | sed 's/[^a-zA-Z-]//g')
+  title_branch_name=$(echo "$title" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g' | sed 's/[^a-zA-Z0-9-]//g')
 
   local branch_name="$GH_SLUG/$jira-$title_branch_name"
   git checkout -B "$branch_name"
 
-  yarn run changelog-add --description "$title" --jira-issue "$jira"
+  # Add changelog if in a Node.js project
+  if [ -f "package.json" ] && yarn run changelog-add --help >/dev/null 2>&1; then
+    yarn run changelog-add --description "$title" --jira-issue "$jira"
+  fi
 
   git add .
   git commit -m "[$jira] $title"
   git push
 
-  gh pr create --assignee @me --body "" --reviewer $GITHUB_REVIEWER --title "[$jira] $title"
+  gh pr create --assignee @me --body "" --reviewer "$GITHUB_REVIEWER" --title "[$jira] $title"
 }

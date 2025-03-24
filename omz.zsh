@@ -14,12 +14,17 @@ export ZSH="$HOME/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-z fzf history ripgrep z cp docker brew adb yarn react-native npm node zsh-autosuggestions)
+# Plugins configuration
+# Only load plugins that are frequently used and provide significant functionality
+plugins=(
+  git            # Essential git aliases and functions
+  fzf            # Fuzzy finder integration
+  z              # Quick directory navigation (removed zsh-z as it's redundant)
+  docker         # Docker completion and aliases
+  yarn           # Yarn completion and aliases
+  node           # Node.js utilities
+  zsh-autosuggestions  # Fish-like autosuggestions
+)
 
 source $ZSH/oh-my-zsh.sh
 

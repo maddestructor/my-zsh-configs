@@ -6,6 +6,12 @@ export GH_TOKEN=$GH_TOKEN
 
 # bump
 function bump-interactive(){
+    # Check if we're in a Node.js project
+    if [ ! -f "package.json" ]; then
+        echo "Error: Not in a Node.js project directory (package.json not found)"
+        return 1
+    }
+
     # prevent losing work
     git add .
     git stash
@@ -16,7 +22,7 @@ function bump-interactive(){
 
     # create dependencies branch
     local branch_name="$MX_SLUG/$JIRA_PROJECT-update-dependencies"
-    git branch -D $branch_name
+    git branch -D $branch_name 2>/dev/null || true
     git checkout -b $branch_name
     
     # upgrade
@@ -27,11 +33,18 @@ function bump-interactive(){
 
     # commit and push
     local pr_title="[$JIRA_PROJECT] Weekly update dependencies - $(date '+%b %d, %Y')"
-    yarn run changelog-add --description "$pr_title" --jira-issue "$jira"
+    
+    # Check if changelog-add command exists
+    if yarn run changelog-add --help >/dev/null 2>&1; then
+        yarn run changelog-add --description "$pr_title" --jira-issue "$JIRA_PROJECT"
+    else
+        echo "Warning: changelog-add command not available, skipping changelog"
+    fi
+
     git add .
     git commit -m "$pr_title"
     git push
 
     # open PR
-    gh pr create --assignee @me --body "" --reviewer $GITHUB_REVIEWER --label "dependencies" --title $pr_title
+    gh pr create --assignee @me --body "" --reviewer $GITHUB_REVIEWER --label "dependencies" --title "$pr_title"
 }
