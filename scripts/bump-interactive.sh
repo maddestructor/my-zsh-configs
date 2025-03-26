@@ -1,16 +1,16 @@
-#!/bin/bash
+#!/bin/zsh
 # custom variables
 export JIRA_PROJECT="PFM"
 export GITHUB_REVIEWER="MaintainX/enterprise-platform-api"
 export GH_TOKEN=$GH_TOKEN
 
 # bump
-function bump-interactive(){
+bump-interactive() {
     # Check if we're in a Node.js project
     if [ ! -f "package.json" ]; then
         echo "Error: Not in a Node.js project directory (package.json not found)"
         return 1
-    }
+    fi
 
     # prevent losing work
     git add .
