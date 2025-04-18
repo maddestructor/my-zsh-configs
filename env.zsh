@@ -17,7 +17,9 @@ export PATH=$PATH:/opt/homebrew/bin/tsc:/opt/homebrew/bin/yarn:$HOME/.dotnet/too
 
 # Custom Scripts
 export PATH=$PATH:$HOME/.scripts
-source $HOME/.scripts/*
+if [ -d "$HOME/.scripts" ]; then
+    source $HOME/.scripts/*
+fi
 
 # Company-specific Configuration
 export MX_SLUG=mb1mac
