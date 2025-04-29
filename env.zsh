@@ -21,5 +21,9 @@ if [ -d "$HOME/.scripts" ]; then
     source $HOME/.scripts/*
 fi
 
+# Java Version Manager
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+
 # Company-specific Configuration
 export MX_SLUG=mb1mac
